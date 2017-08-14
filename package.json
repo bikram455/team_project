@@ -1,0 +1,20 @@
+{
+  "name": "postgresAdmin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch src --exec babel-node src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "http-status-codes": "^1.2.0",
+    "pg": "^7.1.0"
+  }
+}
