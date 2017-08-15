@@ -5,7 +5,7 @@ import { queryService } from '../services/queryService';
 
 let controller = Router();
 
-controller.get('/' , (req , res) => {
+controller.get('/' , (req , res , next) => {
   let add=req.url;
   let query = url.parse(add,true).query;   
   let database = req.headers.schema;
@@ -16,7 +16,9 @@ controller.get('/' , (req , res) => {
     .then( element => {
       res.json(element);
     })
-    .catch(err => next(err));
+    .catch(err => {
+     next(err);
+    });
   }
   else if(query.query){
     queryService(query.query )
@@ -27,7 +29,7 @@ controller.get('/' , (req , res) => {
   }
   else {
     query='select * from pg_database';
-    queryService(query , database)
+    queryService(query)
     .then( element => {
       res.json(element);
     })

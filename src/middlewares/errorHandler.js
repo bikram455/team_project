@@ -1,8 +1,9 @@
 export function error(err, request, response, next){
-  console.error(err.stack)
   response.status(500).json({
-    status:'error',
-    message: err
+    error:{
+      status:'error',
+      message: err
+    }
   });
 }
 
