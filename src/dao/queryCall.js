@@ -1,3 +1,4 @@
+helllo this is git branch
 import url from 'url';
 import { connectClient } from '../connection';
 let client = connectClient();
@@ -29,7 +30,7 @@ export function queryCall(query , database){
         reply = `${action}ed`;
         resolve({reply});
       }
-      resolve(elements.rows);
+      resolve(elements);
     })
     .catch(err => {      
       reject(err.stack.split('\n')[0]);

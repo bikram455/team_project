@@ -10,6 +10,17 @@ controller.get('/' , (req , res , next) => {
   let query = url.parse(add,true).query;   
   let database = req.headers.schema;
   let client;
+
+  let action = query.query.split(' ')[0];
+
+  /*if(action != 'select'){    
+    let err={
+      message:'Please use the appropriate function',
+      instruction:'delete for drop, put for update , post for create'  
+    };
+    
+    next(err);
+  }*/
   
   if(query.query && database){
     queryService(query.query , database)
