@@ -34,7 +34,7 @@ function querySelect(query , database){
       client =connectClient();
     }
   client.query(query)
-  .then(result => resolve({result}))
+  .then(reply => resolve({reply}))
   .catch(err => {
     let error = err.stack.split('\n')[0];
     reject(error)
