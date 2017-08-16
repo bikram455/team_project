@@ -4,6 +4,6 @@ import url from 'url';
 import controller from './controllers/queryController'
 let routes = Router();
 
-routes.use('/', controller);
+routes.use('/queries', controller);
 
 export default routes;

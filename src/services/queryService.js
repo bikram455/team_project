@@ -1,11 +1,7 @@
-import { querySelect } from '../dao/querySelect';
+import { queryCall } from '../dao/queryCall';
 import { queryCreate } from '../dao/queryCreate';
 
-export function queryServiceGet(query , database){
+export function queryServiceCall(query , database){
   
-  return querySelect(query , database);
-}
-
-export function queryServicePost(query , database){
-  return queryCreate(query , database);
+  return queryCall(query , database);
 }
