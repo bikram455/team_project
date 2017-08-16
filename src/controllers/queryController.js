@@ -5,6 +5,7 @@ import * as services from '../services/queryService';
 
 let controller = Router();
 
+//Select Queries
 controller.get('/' , (req , res , next) => {
   let add=req.url;
   let query = url.parse(add,true).query;   
@@ -16,7 +17,7 @@ controller.get('/' , (req , res , next) => {
   if(action != 'select'){    
     let err={
       message:'Please use the appropriate function',
-      instruction:'delete for drop, put for update , post for create'  
+      instruction:'delete for drop, put for update , post for create/insert'  
     };
     
     return next(err);
@@ -49,6 +50,8 @@ controller.get('/' , (req , res , next) => {
  
 });
 
+//insert or create queries
+
 controller.post('/' , (req , res , next) => {
   
   let add=req.url;
@@ -58,30 +61,44 @@ controller.post('/' , (req , res , next) => {
   let statement=query.query;
   let action = query.query.split(' ')[0];
   
-  if(action != 'create'){    
-    let err={
+  if(action != 'create' ){
+    if(action != 'insert'){
+      let err={
       message:'Please use the appropriate function',
       instruction:'delete for drop, put for update , get for select'  
     };    
     return next(err);
+    }    
+    
   }
 
-  let key;
-  let value;
+  let keys = [];
+  let values = [];
   let arrayAttr =[] ;
   let attributes = req.body;
   
   for(let i=0;i<Object.keys(attributes).length;i++){
-    key = Object.keys(attributes)[i];
-    value=Object.values(attributes)[i];
-    arrayAttr[i] = `${key} ${value}`  
+    keys[i] = Object.keys(attributes)[i];
+    values[i]=Object.values(attributes)[i];
+    if(typeof(values[i])=='string'){
+      values[i]=`'${values[i]}'`
+      console.log(values[i]);
+    }
+    arrayAttr[i] = `${keys[i]} ${values[i]}`;
+    
   }
 
-  if(query.query.split(' ')[1] == 'table'){
-    query =`${statement} (${arrayAttr})`;
+  if(action == 'create'){
+    if(query.query.split(' ')[1] == 'table'){
+      query =`${statement} (${arrayAttr})`;
+    }
+    else{
+      query = statement; 
+    }
   }
-  else{
-   query = statement; 
+  else if(action == 'insert'){
+    query =`${statement} (${keys}) values (${values})`;
+    
   }
   console.log(query);
   services.queryServicePost(query , database)

@@ -17,6 +17,7 @@ export function queryCreate(query , database){
     .then(elements => {
       if(action == 'create' ){
         reply = `${element} ${action}d`;
+        
         resolve({reply});
       }
 
