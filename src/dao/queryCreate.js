@@ -16,9 +16,14 @@ export function queryCreate(query , database){
     client.query(query)
     .then(elements => {
       if(action == 'create' ){
-        reply = `${element} ${action}d`;
-        
+        reply = `${element} ${action}d`;       
         resolve({reply});
+        
+      }
+      else if(action == 'insert'){
+        reply = elements.rowCount;
+        reply = `${reply} rows added`;
+        resolve(reply);
       }
 
     })
