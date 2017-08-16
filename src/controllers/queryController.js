@@ -8,7 +8,7 @@ let controller = Router();
 //insert or create queries
 controller.post('/' , (req , res , next) => {
   let query = req.body.query;
-  let database = req.headers.dbname;
+  let database = req.body.dbname;
   services.queryServiceCall(query , database)
   .then(data => res.json(data))
   .catch(err => next(err));
