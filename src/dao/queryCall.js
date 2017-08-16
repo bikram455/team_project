@@ -15,8 +15,11 @@ export function queryCall(query , database){
   else if(action == 'create'){
     return queryCreate(query , database);
   }
-  else if(action == 'drop' || action == 'truncate' ){
+  else if(action == 'drop' || action == 'truncate' || action == 'delete'){
     return queryRemove(query , database);
+  }
+  else if(action == 'update' || action == 'alter'){
+    return queryUpdate(query , database);    
   }
 }
 
@@ -109,7 +112,39 @@ function queryRemove(query , database){
       else if(action == 'truncate'){
         reply = `${reply} truncated`;
       }
-      
+      else if(action == 'delete'){
+        reply = result.rowCount;
+        reply = `${reply} rows deleted`;
+      }
+      resolve({reply});
+    })
+    .catch(err => {
+      let error = err.stack.split('\n')[0];
+    reject(error);
+    });
+  })
+}
+
+//Alter and Update queries
+function queryUpdate(query , database){
+  return new Promise((resolve , reject) => {
+    if(database){
+      client = connectClient(database);
+    }
+    else {
+      client =connectClient();
+    }
+    client.query(query)
+    .then(result => {
+      let reply = query.split(' ')[1];
+      let action = query.split(' ')[0];
+      if(action == 'alter'){
+        reply = `${reply} altered`;
+      }
+      else if(action == 'update'){
+        reply = result.rowCount;
+        reply = `${reply} rows updated`;
+      }      
       resolve({reply});
     })
     .catch(err => {
